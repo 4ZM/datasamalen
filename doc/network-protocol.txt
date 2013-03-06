@@ -1,0 +1,23 @@
+
+This is the network protocol for the data produced by the datasamal and transmitted to e.g. the visualization unit.
+
+
+
++ Protocol version
++ Timestamp { 13:42:11 }
+? Angle { 12 } [0 (forward)  - 360 (right)]
+E Type { AP, CLIENT }
+
+<AP>
++ BSSID (MAC for AP)
+? Encryption { OPEN, WEP, WPA, WPA2 }
++ ESSID (Name.. "hidden")
+? Channel
+
+<CLIENT>
+? BSSID (MAC for AP - alt n/a)
++ STATION (client MAC)
+? PWR
+? Probe Requests (list)
+
+<nl>

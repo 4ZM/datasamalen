@@ -1,0 +1,2 @@
+GUI / Vis  <- {eth0} -> Datasamalen <- {RS232} -> arduino (angle)
+
