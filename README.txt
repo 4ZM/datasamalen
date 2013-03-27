@@ -35,3 +35,6 @@ The project consists of building the hardware; the rotation
 control-mechanism with the antenna connected to a computer. Handle the
 data; intercept the requests and parsing them to accessible data and
 then finally build a visualization from it.
+
+Scrum board for tasks: 
+http://scrumblr.ca/deathray
