@@ -1,0 +1,11 @@
+Flask==0.9
+Flask-Script==0.5.3
+Flask-WTF==0.8.3
+Jinja2==2.6
+WTForms==1.0.3
+Werkzeug==0.8.3
+argparse==1.2.1
+flask-mongoengine==0.6
+mongoengine==0.7.9
+pymongo==2.5
+wsgiref==0.1.2
