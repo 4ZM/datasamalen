@@ -1,6 +1,6 @@
 $(function() {
 
-    $.get("http://0.0.0.0:5000/json", function(data) {
+    $.get("json", function(data) {
         $.each(data, function(id, group) {
             $(".data ul").append("<li>"+id+"</li>")
                 $(".data ul").append("<p>"+group.power +" : " + group.angel+" | " + group.bssid+"</p>")
