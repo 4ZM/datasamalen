@@ -1,7 +1,6 @@
 import random
 from models import Device
 import time
-
 def generate_id():
     id = ''
     characters = 'ABCD1234567890'
