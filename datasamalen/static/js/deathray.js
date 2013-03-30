@@ -1,9 +1,17 @@
 $(function() {
 
+    var rotation = 0,
+        show_data_list = 0;
+
     $.get("json", function(data) {
         $.each(data, function(id, group) {
-            $(".data ul").append("<li>"+id+"</li>");
-            $(".data ul").append("<p>"+group.power +" : " + group.angel+" | " + group.bssid+"</p>");
+
+            if (show_data_list == 1) {
+                $(".data ul").append("<li>"+id+"</li>");
+                $(".data ul").append("<p>"+group.power +" : " + group.angel+" | " + group.bssid+"</p>");
+            }
+
+            // show visualization
             var angel = group.angel
             var x_y =  x_y_from_angel(angel);
             var power = group.power
@@ -22,95 +30,56 @@ $(function() {
         var y = x_y.y
 
         if (power > 79) {
-            $('.highest').clone().css({
-                position: "absolute",
-                opacity: "0.9",
-                top: "500px",
-                left: "500px",
-                zIndex: "100",
-                boxShadow: "0px 0px 10px #22ff00",
-                width: "100px",
-                height: "100px",
-                backgroundColor: "red",
-                borderRadius: "49px",
-                marginLeft: y,
-                marginTop: x
-            }).appendTo('.container');
+            var level = "highest",
+                size = 100,
+                color = "red";
         } else if (power > 60) {
-            $('.high').clone().css({
-                position: "absolute",
-                opacity: "0.9",
-                top: "500px",
-                left: "500px",
-                zIndex: "100",
-                boxShadow: "0px 0px 10px #22ff00",
-                width: "60px",
-                height: "60px",
-                backgroundColor: "#ff6e00",
-                borderRadius: "30px",
-                marginLeft: y,
-                marginTop: x
-            }).appendTo('.container');
+            var level = "high",
+                size = 60,
+                color = "#ff6e00";
         } else if (power > 40) {
-            $('.medium').clone().css({
-                position: "absolute",
-                opacity: "0.9",
-                top: "500px",
-                left: "500px",
-                zIndex: "100",
-                boxShadow: "0px 0px 10px #22ff00",
-                width: "40px",
-                height: "40px",
-                backgroundColor: "#f6e016",
-                borderRadius: "20px",
-                marginLeft: y,
-                marginTop: x
-            }).appendTo('.container');
+            var level = "medium",
+                size = 40,
+                color = "#f6e016";
         } else if (power > 20) {
-            $('.low').clone().css({
-                position: "absolute",
-                opacity: "0.9",
-                top: "500px",
-                left: "500px",
-                zIndex: "100",
-                boxShadow: "0px 0px 10px #22ff00",
-                width: "32px",
-                height: "32px",
-                backgroundColor: "#0051ff",
-                borderRadius: "16px",
-                marginLeft: y,
-                marginTop: x
-            }).appendTo('.container');
+            var level = "low",
+                size = 32,
+                color = "#0051ff";
         } else {
-            $('.minor').clone().css({
-                position: "absolute",
-                opacity: "0.9",
-                top: "500px",
-                left: "500px",
-                zIndex: "100",
-                boxShadow: "0px 0px 10px #22ff00",
-                width: "12px",
-                height: "12px",
-                backgroundColor: "#22ff00",
-                borderRadius: "6px",
-                marginLeft: y,
-                marginTop: x
-            }).appendTo('.container');
+            var level = "minor",
+                size = 16,
+                color = "#22ff00";
         }
+
+        $('.'+level).clone().css({
+            position: "absolute",
+            opacity: "0.9",
+            top: "500px",
+            left: "500px",
+            zIndex: "100",
+            boxShadow: "0px 0px 10px #22ff00",
+            width: size+"px",
+            height: size+"px",
+            backgroundColor: color,
+            borderRadius: size/2+"px",
+            marginLeft: y,
+            marginTop: x
+        }).appendTo('.container');
+
     }
-
-
-
 
         var degree = 90, // starting position
         $element = $('#meter'),
         timer,
         speed = 10, // update rate in milli sec. higher is slower
-        length = 0.1;
+        length = 1;
+    if (rotation == 1)
+        rotate();
+    else
+        $('#meter').remove()
 
-    rotate();
 
-    function rotate() {
+            function rotate() {
         $element.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
         $element.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
         timer = setTimeout(function() {

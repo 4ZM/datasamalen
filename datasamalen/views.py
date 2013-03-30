@@ -13,7 +13,7 @@ def hello():
 @app.route('/json', methods = ['GET'])
 def api_root():
     if request.method == 'GET':
-        devices = Device.objects.all().order_by('-_id')[:20]
+        devices = Device.objects.all().order_by('-_id')[:10]
 
         devices_data = {}
         for d in devices:
