@@ -1,31 +1,66 @@
+
 $(function() {
 
     var rotation = 0,
-        show_data_list = 0;
+        show_data_list = 1;
 
     $.get("json", function(data) {
         $.each(data, function(id, group) {
+            var _id = group.id,
+                angel = group.angel,
+                bssid = group.bssid,
+                x_y =  x_y_from_angel(angel),
+                power = group.power,
+                local_id = bssid.toString().replace(/\:/g, '');
+                j = 1;
 
-            if (show_data_list == 1) {
-                $(".data ul").append("<li>"+id+"</li>");
-                $(".data ul").append("<p>"+group.power +" : " + group.angel+" | " + group.bssid+"</p>");
-            }
+            // add device to localstorage
+            if (localStorage.getItem(local_id))
+                var v =  delete localStorage[local_id];
+            localStorage.setItem(local_id,
+                    '{"id":"'+_id+'", ' +
+                    '"mac" :"'+bssid+'", ' +
+                    '"angle" :"'+angel+'", '+
+                    '"power" :"'+power+'"}');
+
 
             // show visualization
-            var angel = group.angel
-            var x_y =  x_y_from_angel(angel);
-            var power = group.power
-            indicator(x_y, power)
+            indicator(x_y, power, _id, bssid, angel);
+
+            list_devices();
         });
     });
+
+    function list_devices() {
+        if (show_data_list == 1) {
+            for(var i=0, len=localStorage.length; i<len; i++) {
+                var key = localStorage.key(i);
+                var value = localStorage[key];
+
+                var value = $.parseJSON(localStorage[key]);
+
+
+                $(".data ul").append('<li id="'+value['id']+'" ' +
+                    'class="device_info">Device ' +
+                    'id: '+value['mac']+'<br/>' +
+                    'Power:'+value['power']+
+                    ' Angel: ' +value['angle']+'<br/>' +
+                    '<button>nmap</button>' +
+                    '<button>disassociate</button>'+
+                    '<button>upsidedownternet</button><br/>' +
+                    '</li>');
+
+            }
+        }
+    }
 
     function x_y_from_angel(angle) {
         var x = 0 + 400 * Math.cos(angle);
         var y = 0 + 400 * Math.sin(angle);
         return { 'x':x, 'y':y }
-    }
+    };
 
-    function indicator(x_y, power){
+    function indicator(x_y, power, _id, bssid, angel){
         var x = x_y.x
         var y = x_y.y
 
@@ -57,6 +92,7 @@ $(function() {
             top: "500px",
             left: "500px",
             zIndex: "100",
+            cursor: "pointer",
             boxShadow: "0px 0px 10px #22ff00",
             width: size+"px",
             height: size+"px",
@@ -64,27 +100,42 @@ $(function() {
             borderRadius: size/2+"px",
             marginLeft: y,
             marginTop: x
-        }).appendTo('.container');
-
+        }).attr({"id": _id, "class": "device"}).appendTo('.container');
+        device_into(level, power, angel, bssid);
     }
 
+    function device_into(level, power, angel, bssid) {
+    $('.device').click(function(e){
+        $(this).css({outlineStyle: "dashed"}).append(".");
+
+        $('.device_info').hide()
+        $('#'+this.id).show()
+        console.log(this.id)
+    });
+    }
+
+
+    if (rotation == 1) {
         var degree = 90, // starting position
-        $element = $('#meter'),
-        timer,
-        speed = 10, // update rate in milli sec. higher is slower
-        length = 1;
-    if (rotation == 1)
+            $element = $('#meter'),
+            timer,
+            speed = 10, // update rate in milli sec. higher is slower
+            length = 1;
+
         rotate();
+
+        function rotate() {
+            $element.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
+            $element.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
+            timer = setTimeout(function() {
+                degree = degree + length;
+                rotate();
+            },speed);
+        }
+    }
     else
         $('#meter').remove()
 
 
-            function rotate() {
-        $element.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
-        $element.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
-        timer = setTimeout(function() {
-            degree = degree + length;
-            rotate();
-        },speed);
-    }
+
 });

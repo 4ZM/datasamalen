@@ -17,7 +17,9 @@ def api_root():
 
         devices_data = {}
         for d in devices:
-            devices_data[d.mac] = {'power':d.power,'angel':d.angel,'bssid':d.bssid}
+            id = str(d.id)
+
+            devices_data[d.mac] = {'power':d.power,'angel':d.angel,'bssid':d.bssid, 'id':id}
 
         resp = jsonify(devices_data)
         resp.status_code = 200

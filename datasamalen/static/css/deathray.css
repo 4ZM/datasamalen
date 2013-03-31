@@ -24,41 +24,36 @@ ul li {
   #deathray .indicator, #deathray .highest, #deathray .high, #deathray .medium, #deathray .low, #deathray .minor {
     position: absolute;
     opacity: 0.9;
-    top: 500px;
-    left: 500px;
+    top: 1100px;
+    left: 20px;
     z-index: 100;
     box-shadow: 0px 0px 10px #22ff00; }
   #deathray .highest {
-    margin-left: 250px;
-    margin-top: 250px;
+    margin-left: 10px;
     width: 100px;
     height: 100px;
     background-color: red;
     border-radius: 50px; }
   #deathray .high {
-    margin-left: 0px;
-    margin-top: 386px;
+    margin-left: 120px;
     width: 60px;
     height: 60px;
     background-color: #ff6e00;
     border-radius: 30px; }
   #deathray .medium {
-    margin-left: -416px;
-    margin-top: 0px;
+    margin-left: 200px;
     width: 40px;
     height: 40px;
     background-color: #f6e016;
     border-radius: 20px; }
   #deathray .low {
-    margin-left: 400px;
-    margin-top: 0px;
+    margin-left: 260px;
     width: 32px;
     height: 32px;
     background-color: #0051ff;
     border-radius: 16px; }
   #deathray .minor {
-    margin-left: 286px;
-    margin-top: -284px;
+    margin-left: 300px;
     width: 12px;
     height: 12px;
     background-color: #22ff00;
@@ -130,3 +125,5 @@ aside {
   background-color: black; }
   aside h2 {
     margin-left: 4px; }
+  aside .device_info {
+    display: none; }
