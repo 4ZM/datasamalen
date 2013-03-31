@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, jsonify, request
 from datasamalen import app
 from datasamalen.models import Device
-#from datasamalen.mock_data import create_device
+from datasamalen.mock_data import *
 
 devices = Blueprint('devices', __name__, template_folder='templates')
 
@@ -14,7 +14,6 @@ def hello():
 def api_root():
     if request.method == 'GET':
         devices = Device.objects.all().order_by('-_id')[:10]
-
         devices_data = {}
         for d in devices:
             id = str(d.id)
@@ -25,3 +24,27 @@ def api_root():
         resp.status_code = 200
 
         return resp
+
+
+@app.route('/muck', methods = ['GET'])
+def muck():
+    device_data = create_device()
+    resp = jsonify(device_data)
+    resp.status_code = 200
+
+    return resp
+
+def create_device():
+    device = Device(
+        mac=generate_id(),
+        power=str(generate_num(100)),
+        angel=str(generate_num(360)),
+        bssid=generate_id(),
+        packets=str(generate_num(9999))
+    )
+
+    device.save()
+    device_data = {}
+    device_data[device.mac] = {'power':device.power,'angel':device.angel,'bssid':device.bssid}
+
+    return device_data

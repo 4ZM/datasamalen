@@ -1,6 +1,5 @@
 import random
-from models import Device
-import time
+
 def generate_id():
     id = ''
     characters = 'ABCD1234567890'
@@ -23,21 +22,3 @@ def mock_one_data():
     devices_data = {'mac':generate_id(), 'power':generate_num(100),'angel':generate_num(360), 'bssid':generate_id(), 'packets':generate_num(9999)}
     return devices_data
 
-
-def create_device():
-    device = Device(
-        mac=generate_id(),
-        power=str(generate_num(100)),
-        angel=str(generate_num(360)),
-        bssid=generate_id(),
-        packets=str(generate_num(9999))
-    )
-    time.sleep(2)
-    print "new device created"
-    device.save()
-
-from threading import Thread
-
-for i in range(10):
-    t = Thread(target=create_device())
-    t.start()

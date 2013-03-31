@@ -39,7 +39,6 @@ $(function() {
 
                 var value = $.parseJSON(localStorage[key]);
 
-
                 $(".data ul").append('<li id="'+value['id']+'" ' +
                     'class="device_info">Device ' +
                     'id: '+value['mac']+'<br/>' +
