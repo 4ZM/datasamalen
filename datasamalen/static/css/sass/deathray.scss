@@ -3,6 +3,7 @@
 body {
   background-color: #03010f;
   color: orange;
+  font-size: 1.1em;
 }
 ul {
   li {
@@ -149,13 +150,14 @@ aside{
   top: 40px;
   left: 1100px;
   width: 470px;
-  min-height: 480px;
+  min-height: 220px;
   margin: 0 0 20px 0;
   color: yellow;
   background-color: black;
+  border-radius: 10px;
 
   h2 {
-    margin-left: 4px;
+    margin-left: 12px;
   }
    .device_info {
     display: none;

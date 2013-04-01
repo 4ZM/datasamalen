@@ -2,67 +2,114 @@
 $(function() {
 
     var rotation = 0,
-        show_data_list = 1;
+        show_data_list = 1,
+        print_time = 1
+        devices_listed = 0;
+        first = 1;
+        regular = 0
+        var times;
 
-    $.get("json", function(data) {
-        $.each(data, function(id, group) {
-            var _id = group.id,
-                angel = group.angel,
-                bssid = group.bssid,
-                x_y =  x_y_from_angel(angel),
-                power = group.power,
-                local_id = bssid.toString().replace(/\:/g, '');
-                j = 1;
+        // TODO get new data
+    setTimeout(updateContent, 10000);
+    function updateContent() {
+        $.ajax({
+            url:"json",
+            beforeSend: function ( xhr ) {
+                var len_before=localStorage.length
+            }
+            }).done(function ( data ) {
 
-            // add device to localstorage
-            if (localStorage.getItem(local_id))
-                var v =  delete localStorage[local_id];
-            localStorage.setItem(local_id,
-                    '{"id":"'+_id+'", ' +
-                    '"mac" :"'+bssid+'", ' +
-                    '"angle" :"'+angel+'", '+
-                    '"power" :"'+power+'"}');
+                $.each(data, function(id, group) {
+
+                    var _id = group.id,
+                    angel = group.angel,
+                    bssid = group.bssid,
+                    power = group.power,
+                    local_id = bssid.toString().replace(/\:/g, '');
+
+                    if(first == 1) {
+                        localStorage.clear();
+                        first = 0;
+                    }
+
+                    // add device to local storage
+                    device = localStorage.getItem(local_id);
+                    if (device && regular == 1){
+
+                    }
+                    else {
+                        store_device(_id, angel, bssid, power, local_id);
+                        len=localStorage.length
+
+                        list_devices(1);
 
 
-            // show visualization
-            indicator(x_y, power, _id, bssid, angel);
+                    }
 
-            list_devices();
+                    if (print_time == 10 && regular == 0){
+                        list_devices(1);
+                        regular = 1
+                        var times = print_time
+                    }
+                    else if (regular == 0) {
+                        print_time = print_time +1;
+                    } else {
+
+                    }
+
+                });
+
+            setTimeout(updateContent, 1000);
+
         });
-    });
+    }
 
-    function list_devices() {
+
+    function store_device(_id, angel, bssid, power, local_id) {
+        localStorage.setItem(local_id,
+            '{"id":"'+_id+'", ' +
+                '"mac" :"'+bssid+'", ' +
+                '"angle" :"'+angel+'", '+
+                '"power" :"'+power+'"}');
+
+    }
+
+    function list_devices(num) {
+        len=localStorage.length
+
         if (show_data_list == 1) {
-            for(var i=0, len=localStorage.length; i<len; i++) {
+
+            for(var i=num; i<len; i++) {
                 var key = localStorage.key(i);
                 var value = localStorage[key];
-
                 var value = $.parseJSON(localStorage[key]);
 
                 $(".data ul").append('<li id="'+value['id']+'" ' +
                     'class="device_info">Device ' +
-                    'id: '+value['mac']+'<br/>' +
-                    'Power:'+value['power']+
-                    ' Angel: ' +value['angle']+'<br/>' +
+                    'Id: '+value['mac']+'<br/>' +
+                    'Power: '+value['power']+'<br/>' +
+                    'Angel: ' +value['angle']+'<br/><br/>' +
                     '<button>nmap</button>' +
                     '<button>disassociate</button>'+
                     '<button>upsidedownternet</button><br/>' +
                     '</li>');
-
+                var x_y =  x_y_from_angel(value['angle'], value['power']);
+                // show visualization
+                indicator(x_y, value['power'], value['id']);
             }
+
         }
     }
 
-    function x_y_from_angel(angle) {
-        var x = 0 + 400 * Math.cos(angle);
-        var y = 0 + 400 * Math.sin(angle);
+    function x_y_from_angel(angle, power) {
+        var x = 0 + (power*5-100) * Math.cos(angle);
+        var y = 0 + (power*5-100) * Math.sin(angle);
         return { 'x':x, 'y':y }
     };
 
-    function indicator(x_y, power, _id, bssid, angel){
+    function indicator(x_y, power, _id){
         var x = x_y.x
         var y = x_y.y
-
         if (power > 79) {
             var level = "highest",
                 size = 100,
@@ -84,7 +131,6 @@ $(function() {
                 size = 16,
                 color = "#22ff00";
         }
-
         $('.'+level).clone().css({
             position: "absolute",
             opacity: "0.9",
@@ -100,16 +146,14 @@ $(function() {
             marginLeft: y,
             marginTop: x
         }).attr({"id": _id, "class": "device"}).appendTo('.container');
-        device_into(level, power, angel, bssid);
+        device_info();
     }
 
-    function device_into(level, power, angel, bssid) {
+    function device_info() {
     $('.device').click(function(e){
-        $(this).css({outlineStyle: "dashed"}).append(".");
-
+        $(this).css({outlineStyle: "dashed", border:"3px solid black"});
         $('.device_info').hide()
         $('#'+this.id).show()
-        console.log(this.id)
     });
     }
 
