@@ -145,20 +145,36 @@ ul {
   z-index: 1000;
 }
 
-aside{
-  position: absolute;
-  top: 40px;
-  left: 1100px;
-  width: 470px;
-  min-height: 220px;
-  margin: 0 0 20px 0;
-  color: yellow;
-  background-color: black;
-  border-radius: 10px;
+aside {
+
+  .all_data {
+    position: absolute;
+    left: 1100px;
+    width: 470px;
+
+    margin: 0 0 20px 0;
+    color: yellow;
+    background-color: black;
+    border-radius: 10px;
+  }
+
+  .data {
+    @extend .all_data;
+    top: 40px;
+    height: 220px;
+  }
+  .data_2 {
+    @extend .all_data;
+    top: 280px;
+    height: 660px;
+
+  }
 
   h2 {
     margin-left: 12px;
+    background-color: #05021b;
   }
+
    .device_info {
     display: none;
   }

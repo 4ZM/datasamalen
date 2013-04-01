@@ -16,6 +16,7 @@ $(function() {
             url:"json",
             beforeSend: function ( xhr ) {
                 var len_before=localStorage.length
+
             }
             }).done(function ( data ) {
 
@@ -40,9 +41,7 @@ $(function() {
                     else {
                         store_device(_id, angel, bssid, power, local_id);
                         len=localStorage.length
-
                         list_devices(1);
-
 
                     }
 
@@ -50,9 +49,11 @@ $(function() {
                         list_devices(1);
                         regular = 1
                         var times = print_time
+
                     }
                     else if (regular == 0) {
                         print_time = print_time +1;
+
                     } else {
 
                     }
@@ -71,6 +72,12 @@ $(function() {
                 '"mac" :"'+bssid+'", ' +
                 '"angle" :"'+angel+'", '+
                 '"power" :"'+power+'"}');
+
+        $(".data_2 ul").prepend('<li id="'+local_id+'">' +
+            'Bssid: '+bssid+
+            ' Power: '+power+
+            ' Angel: '+angel+
+            '</li>');
 
     }
 
@@ -142,10 +149,11 @@ $(function() {
             width: size+"px",
             height: size+"px",
             backgroundColor: color,
+            fontcolor: "#FFFFFF",
             borderRadius: size/2+"px",
             marginLeft: y,
             marginTop: x
-        }).attr({"id": _id, "class": "device"}).appendTo('.container');
+        }).attr({"id": _id, "class": "device"}).html(power).appendTo('.container');
         device_info();
     }
 

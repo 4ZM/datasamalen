@@ -115,17 +115,22 @@ ul li {
   box-shadow: 20px -2px 34px green;
   z-index: 1000; }
 
-aside {
+aside .all_data, aside .data, aside .data_2 {
   position: absolute;
-  top: 40px;
   left: 1100px;
   width: 470px;
-  min-height: 220px;
   margin: 0 0 20px 0;
   color: yellow;
   background-color: black;
   border-radius: 10px; }
-  aside h2 {
-    margin-left: 12px; }
-  aside .device_info {
-    display: none; }
+aside .data {
+  top: 40px;
+  height: 220px; }
+aside .data_2 {
+  top: 280px;
+  height: 660px; }
+aside h2 {
+  margin-left: 12px;
+  background-color: #05021b; }
+aside .device_info {
+  display: none; }

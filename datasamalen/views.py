@@ -13,7 +13,7 @@ def hello():
 @app.route('/json', methods = ['GET'])
 def api_root():
     if request.method == 'GET':
-        devices = Device.objects.all().order_by('-_id')[:10]
+        devices = Device.objects.all().order_by('-_id')[:20]
         devices_data = {}
         for d in devices:
             id = str(d.id)
@@ -33,6 +33,17 @@ def muck():
     resp.status_code = 200
 
     return resp
+
+@app.route('/disassociate/<device>', methods = ['GET'])
+def disassociate(device):
+    ## TODO make disassociation logic
+    message = {}
+    message[device] = 'disassociated'
+    resp = jsonify(message)
+    resp.status_code = 200
+
+    return resp
+
 
 def create_device():
     device = Device(
