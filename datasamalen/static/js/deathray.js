@@ -10,12 +10,11 @@ $(function() {
         var times;
 
         // TODO get new data
-    setTimeout(updateContent, 10000);
+    updateContent()
     function updateContent() {
         $.ajax({
             url:"json",
             beforeSend: function ( xhr ) {
-                var len_before=localStorage.length
 
             }
             }).done(function ( data ) {
@@ -33,52 +32,50 @@ $(function() {
                         first = 0;
                     }
 
-                    // add device to local storage
-                    device = localStorage.getItem(local_id);
-                    if (device && regular == 1){
-
-                    }
-                    else {
-                        store_device(_id, angel, bssid, power, local_id);
-                        len=localStorage.length
-                        list_devices(1);
-
-                    }
-
-                    if (print_time == 10 && regular == 0){
-                        list_devices(1);
-                        regular = 1
-                        var times = print_time
-
-                    }
-                    else if (regular == 0) {
-                        print_time = print_time +1;
-
-                    } else {
-
-                    }
+                    store_device(_id, angel, bssid, power, local_id);
 
                 });
 
-            setTimeout(updateContent, 1000);
+            setTimeout(updateContent, 5000);
 
         });
     }
 
 
-    function store_device(_id, angel, bssid, power, local_id) {
-        localStorage.setItem(local_id,
+    function store_device(_id, angle, bssid, power, local_id) {
+        device = localStorage.getItem(local_id);
+        if (device) {
+
+        } else {
+            localStorage.setItem(local_id,
             '{"id":"'+_id+'", ' +
                 '"mac" :"'+bssid+'", ' +
-                '"angle" :"'+angel+'", '+
+                '"angle" :"'+angle+'", '+
                 '"power" :"'+power+'"}');
 
         $(".data_2 ul").prepend('<li id="'+local_id+'">' +
             'Bssid: '+bssid+
             ' Power: '+power+
-            ' Angel: '+angel+
+            ' Angel: '+angle+
+            '</li>');
+        var x_y =  x_y_from_angel(angle, power);
+        list_device(_id, x_y, bssid, angle, power);
+
+        }
+    }
+
+    function list_device(id, x_y, bssid, angle, power) {
+        $(".data ul").append('<li id="'+id+'" ' +
+            'class="device_info">Device ' +
+            'Id: '+bssid+'<br/>' +
+            'Power: '+power+'<br/>' +
+            'Angel: ' +angle+'<br/><br/>' +
+            '<button>nmap</button>' +
+            '<button>disassociate</button>'+
+            '<button>upsidedownternet</button><br/>' +
             '</li>');
 
+        indicator(x_y, power, id, angle);
     }
 
     function list_devices(num) {
@@ -102,19 +99,20 @@ $(function() {
                     '</li>');
                 var x_y =  x_y_from_angel(value['angle'], value['power']);
                 // show visualization
-                indicator(x_y, value['power'], value['id']);
+                indicator(x_y, value['power'], value['id'], value['angle']);
             }
 
         }
     }
 
     function x_y_from_angel(angle, power) {
-        var x = 0 + (power*5-100) * Math.cos(angle);
-        var y = 0 + (power*5-100) * Math.sin(angle);
+        var x = parseInt(300 * Math.cos(angle));
+        var y = parseInt(300 * Math.sin(angle) * -1);
+        console.log('a: '+angle+' x: '+x+' y: '+y);
         return { 'x':x, 'y':y }
-    };
+    }
 
-    function indicator(x_y, power, _id){
+    function indicator(x_y, power, _id, angle){
         var x = x_y.x
         var y = x_y.y
         if (power > 79) {
@@ -141,8 +139,8 @@ $(function() {
         $('.'+level).clone().css({
             position: "absolute",
             opacity: "0.9",
-            top: "500px",
-            left: "500px",
+            top: 500+size+"px",
+            left: 500+size+"px",
             zIndex: "100",
             cursor: "pointer",
             boxShadow: "0px 0px 10px #22ff00",
@@ -151,9 +149,9 @@ $(function() {
             backgroundColor: color,
             fontcolor: "#FFFFFF",
             borderRadius: size/2+"px",
-            marginLeft: y,
-            marginTop: x
-        }).attr({"id": _id, "class": "device"}).html(power).appendTo('.container');
+            marginLeft: x,
+            marginTop: y
+        }).attr({"id": _id, "class": "device"}).html(angle).appendTo('.container');
         device_info();
     }
 
