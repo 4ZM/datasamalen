@@ -26,7 +26,7 @@ int sensor_val = 0;
 
 int step_cnt = 0;
 int step_min_on_time = 5;
-int step_speed = 20;
+int step_speed = 30;
 int step_cnt_max = 200;
 
 void setup()
@@ -38,6 +38,8 @@ void setup()
 
   digitalWrite(inhibit_pin, HIGH);
   digitalWrite(direction_pin, direction);
+  
+  Serial.begin(9600);
 }
 
 void loop()
@@ -71,6 +73,9 @@ void prepare_step()
     --step_cnt;
   else
     ++step_cnt;
+
+  // Send angulare info
+  Serial.println(step_cnt * 100 / step_cnt_max);
 }
 
 void step() 
