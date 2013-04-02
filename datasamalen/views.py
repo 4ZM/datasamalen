@@ -58,6 +58,9 @@ def command(command):
     elif command == 'start mon':
         start_monitor()
         return '%s start monitor mode' % str(t)
+    elif command == 'start scan':
+        start_scan()
+        return '%s start scanning' % str(t)
     elif command == 'stop mon':
         stop_monitor()
         return '%s stop monitor mode' % str(t)
@@ -73,17 +76,26 @@ def restart_wlan():
     local("sudo ifconfig wlan0 up")
     return "restaring deathray"
 
+
+def start_scan():
+    local("sudo ifconfig wlan0 down")
+    local("sudo ifconfig wlan0 up")
+    local("sudo airmon-ng start wlan0")
+    local("sudo airodump-ng mon0")
+    return "scanning"
+
 def start_monitor():
     local("sudo airmon-ng start wlan0")
     return "running air-mon"
 
 def stop_monitor():
-    local("sudo airmon-ng stop wlan0")
+    local("sudo airmon-ng stop mon0")
     return "stopping air-mon"
+
 
 def start_airmon():
     local("sudo airodump-ng mon0")
-    return "running air-mon"
+    return "mon down"
 
 def run_dump():
     local("perl airodump-scrubber.pl")

@@ -88,6 +88,7 @@ ul {
 }
 
 
+
 #outor {
   @extend .circle;
   top: 46px;
@@ -104,6 +105,15 @@ ul {
   width: 800px;
   height: 800px;
   border-radius: 400px;
+}
+
+#midder {
+  @extend .circle;
+  top: 270px;
+  left: 270px;
+  width: 540px;
+  height: 540px;
+  border-radius: 285px;
 }
 
 #center {
@@ -134,13 +144,13 @@ ul {
   position: absolute;
   top: 540px;
   left: 540px;
+  opacity: 0.1;
   margin: auto;
   padding: 0;
-  width: 8px;
+  width: 6px;
   height: 490px;
   background-color: #22ff00;
   transform-origin: 0px 0px;
-  box-shadow: 20px -2px 34px green;
   z-index: 1000;
 }
 

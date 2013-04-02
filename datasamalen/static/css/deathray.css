@@ -60,7 +60,7 @@ ul li {
     background-color: #22ff00;
     border-radius: 6px; }
 
-.circle, #outor, #inner, #center, #center_point {
+.circle, #outor, #inner, #midder, #center, #center_point {
   position: absolute;
   opacity: 0.9;
   margin: auto;
@@ -81,6 +81,13 @@ ul li {
   width: 800px;
   height: 800px;
   border-radius: 400px; }
+
+#midder {
+  top: 270px;
+  left: 270px;
+  width: 540px;
+  height: 540px;
+  border-radius: 285px; }
 
 #center {
   top: 460px;
@@ -106,13 +113,13 @@ ul li {
   position: absolute;
   top: 540px;
   left: 540px;
+  opacity: 0.1;
   margin: auto;
   padding: 0;
-  width: 8px;
+  width: 6px;
   height: 490px;
   background-color: #22ff00;
   transform-origin: 0px 0px;
-  box-shadow: 20px -2px 34px green;
   z-index: 1000; }
 
 aside .all_data, aside .data, aside .data_2_title, aside .data_2, aside .data_3, aside .console {

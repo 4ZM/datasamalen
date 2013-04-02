@@ -19,7 +19,7 @@ $(function() {
 
             }
             }).done(function ( data ) {
-
+                rotate();
                 $.each(data, function(id, group) {
 
                     var _id = group.id,
@@ -37,7 +37,7 @@ $(function() {
 
                 });
 
-            setTimeout(updateContent, 5000);
+                setTimeout(updateContent, 5000);
 
         });
     }
@@ -183,26 +183,34 @@ $(function() {
         });
     }
 
-    if (rotation == 1) {
-        var degree = 90, // starting position
-            $element = $('#meter'),
-            timer,
-            speed = 10, // update rate in milli sec. higher is slower
-            length = 1;
+    var degree = 0, // starting position
+        $element = $('#meter'),
+        timer,
+        speed = 10, // update rate in milli sec. higher is slower
+        length = 10;
 
-        rotate();
+    function rotate() {
+        $('#meter').show();
 
-        function rotate() {
-            $element.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
-            $element.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
-            timer = setTimeout(function() {
-                degree = degree + length;
+
+        $element.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
+        $element.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
+        timer = setTimeout(function() {
+            degree = degree + length;
+
+            if (degree > 350) {
+                $('#meter').hide();
+                degree = 0;
+            }
+            else
                 rotate();
-            },speed);
-        }
+
+            console.log(degree);
+
+        },speed);
     }
-    else
-        $('#meter').remove()
+
+
 
 
 
