@@ -3,7 +3,7 @@ from datasamalen import app
 from datasamalen.models import Device
 from datasamalen.mock_data import *
 from fabric.api import local
-import time
+from datetime import datetime
 
 devices = Blueprint('devices', __name__, template_folder='templates')
 
@@ -48,43 +48,46 @@ def disassociate(device):
 
 @app.route('/console/<command>', methods = ['GET'])
 def command(command):
+    t = datetime.now().strftime('[%H:%M:%S]')
+    print t
     if command == '--help':
-        return "help section"
+        return '%s Commands: 1:[restart wlan] 2:[start mon] [stop mon] 3:[start dump] [stop dump]' %  str(t)
     elif command == 'restart wlan':
+        restart_wlan()
+        return '%s wlan restarted' % str(t)
+    elif command == 'start mon':
         start_monitor()
-        return "wlan restarted"
+        return '%s start monitor mode' % str(t)
+    elif command == 'stop mon':
+        stop_monitor()
+        return '%s stop monitor mode' % str(t)
+    elif command == 'run data':
+        run_dump()
+        return '%s dumping data into database' % str(t)
     else:
-        return "--help"
+        return '%s --help' % str(t)
 
 
-def start_monitor():
+def restart_wlan():
     local("sudo ifconfig wlan0 down")
     local("sudo ifconfig wlan0 up")
     return "restaring deathray"
 
-@app.route('/start_mon0', methods = ['GET'])
 def start_monitor():
     local("sudo airmon-ng start wlan0")
     return "running air-mon"
 
-@app.route('/stop_mon0', methods = ['GET'])
 def stop_monitor():
     local("sudo airmon-ng stop wlan0")
     return "stopping air-mon"
 
-@app.route('/monitor_airmon', methods = ['GET'])
 def start_airmon():
     local("sudo airodump-ng mon0")
     return "running air-mon"
 
-@app.route('/run_dump', methods = ['GET'])
 def run_dump():
     local("perl airodump-scrubber.pl")
     return "test ok"
-
-
-
-
 
 def create_device():
     device = Device(
