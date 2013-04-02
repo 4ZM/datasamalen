@@ -38,3 +38,11 @@ then finally build a visualization from it.
 
 Scrum board for tasks: 
 http://scrumblr.ca/deathray
+
+Install:
+... virtualenv
+... git clone https://github.com/Sparvnastet/datasamalen.git
+... pip install -r requirements
+... python manage.py runserver
+
+... to make muck data : 0.0.0.0:5000/muck
