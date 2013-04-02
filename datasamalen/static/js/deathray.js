@@ -9,7 +9,8 @@ $(function() {
         regular = 0
         var times;
 
-        // TODO get new data
+
+
     updateContent()
     function updateContent() {
         $.ajax({
@@ -82,6 +83,7 @@ $(function() {
         len=localStorage.length
 
         if (show_data_list == 1) {
+
             for(var i=num; i<len; i++) {
                 var key = localStorage.key(i);
                 var value = localStorage[key];
@@ -107,7 +109,6 @@ $(function() {
     function x_y_from_angel(angle, power) {
         var x = parseInt(300 * Math.cos(angle));
         var y = parseInt(300 * Math.sin(angle) * -1);
-        console.log('a: '+angle+' x: '+x+' y: '+y);
         return { 'x':x, 'y':y }
     }
 
@@ -155,13 +156,29 @@ $(function() {
     }
 
     function device_info() {
-    $('.device').click(function(e){
-        $(this).css({outlineStyle: "dashed", border:"3px solid black"});
-        $('.device_info').hide()
-        $('#'+this.id).show()
-    });
+        $('.device').click(function(e){
+            $(this).css({outlineStyle: "dashed", border:"3px solid black"});
+            $('.device_info').hide()
+            $('#'+this.id).show()
+        });
     }
 
+    server_console();
+    function server_console() {
+        $('.submit').click(function(e){
+            var command = $('.command').val()
+            e.preventDefault();
+            $.ajax({
+                url:"console/"+command
+
+            }).done(function ( data ) {
+                $(".data_3 ul").append('<li>' +
+                    data +
+                    '</li>');
+                });
+            $('.command').val('')
+        });
+    }
 
     if (rotation == 1) {
         var degree = 90, // starting position

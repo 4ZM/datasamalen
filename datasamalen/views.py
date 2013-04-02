@@ -3,7 +3,7 @@ from datasamalen import app
 from datasamalen.models import Device
 from datasamalen.mock_data import *
 from fabric.api import local
-
+import time
 
 devices = Blueprint('devices', __name__, template_folder='templates')
 
@@ -46,12 +46,43 @@ def disassociate(device):
 
     return resp
 
+@app.route('/console/<command>', methods = ['GET'])
+def command(command):
+    if command == '--help':
+        return "help section"
+    elif command == 'restart wlan':
+        start_monitor()
+        return "wlan restarted"
+    else:
+        return "--help"
 
 
-@app.route('/test', methods = ['GET'])
-def first():
-    local("ls")
+def start_monitor():
+    local("sudo ifconfig wlan0 down")
+    local("sudo ifconfig wlan0 up")
+    return "restaring deathray"
+
+@app.route('/start_mon0', methods = ['GET'])
+def start_monitor():
+    local("sudo airmon-ng start wlan0")
+    return "running air-mon"
+
+@app.route('/stop_mon0', methods = ['GET'])
+def stop_monitor():
+    local("sudo airmon-ng stop wlan0")
+    return "stopping air-mon"
+
+@app.route('/monitor_airmon', methods = ['GET'])
+def start_airmon():
+    local("sudo airodump-ng mon0")
+    return "running air-mon"
+
+@app.route('/run_dump', methods = ['GET'])
+def run_dump():
+    local("perl airodump-scrubber.pl")
     return "test ok"
+
+
 
 
 
