@@ -82,7 +82,6 @@ $(function() {
         len=localStorage.length
 
         if (show_data_list == 1) {
-
             for(var i=num; i<len; i++) {
                 var key = localStorage.key(i);
                 var value = localStorage[key];
@@ -139,8 +138,8 @@ $(function() {
         $('.'+level).clone().css({
             position: "absolute",
             opacity: "0.9",
-            top: 500+size+"px",
-            left: 500+size+"px",
+            top: "500px",
+            left: "500px",
             zIndex: "100",
             cursor: "pointer",
             boxShadow: "0px 0px 10px #22ff00",

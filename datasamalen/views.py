@@ -2,6 +2,8 @@ from flask import render_template, Blueprint, jsonify, request
 from datasamalen import app
 from datasamalen.models import Device
 from datasamalen.mock_data import *
+from fabric.api import local
+
 
 devices = Blueprint('devices', __name__, template_folder='templates')
 
@@ -43,6 +45,14 @@ def disassociate(device):
     resp.status_code = 200
 
     return resp
+
+
+
+@app.route('/test', methods = ['GET'])
+def first():
+    local("ls")
+    return "test ok"
+
 
 
 def create_device():
