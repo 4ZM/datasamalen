@@ -107,8 +107,10 @@ $(function() {
     }
 
     function x_y_from_angel(angle, power) {
-        var x = parseInt(300 * Math.cos(angle));
-        var y = parseInt(300 * Math.sin(angle) * -1);
+        var x = parseInt(46 * power/10 * Math.cos(angle));
+        var y = parseInt(46 *  power/10 *Math.sin(angle) * -1);
+        console.log(angle +': tdxxos:'+x+' rlycin: '+y )
+
         return { 'x':x, 'y':y }
     }
 
@@ -151,7 +153,7 @@ $(function() {
             borderRadius: size/2+"px",
             marginLeft: x,
             marginTop: y
-        }).attr({"id": _id, "class": "device"}).html(angle).appendTo('.container');
+        }).attr({"id": _id, "class": "device"}).html(angle+":"+power).appendTo('.container');
         device_info();
     }
 
