@@ -176,7 +176,8 @@ $(function() {
                     data +
                     '</li>');
                 });
-            $('.command').val('')
+            $('.command').val('');
+            $('.data_3').scrollTop(1000000)
         });
     }
 

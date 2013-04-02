@@ -135,15 +135,17 @@ aside .data_2 {
   overflow: auto; }
 aside .data_3 {
   top: 750px;
-  height: 300px;
+  height: 250px;
   overflow: auto;
-  padding-bottom: 40px; }
+  margin-bottom: 40px;
+  bottom: 0; }
+  aside .data_3 ul {
+    padding: 0 0 10px; }
 aside .console {
   top: 1000px;
-  height: 20px; }
+  height: 20px;
+  background-color: #03010f; }
   aside .console input[type="text"] {
-    padding: 1px 0px 0px 10px;
-    margin: 1px 0px 0px 40px;
     width: 390px;
     height: 24px;
     background-color: #000000;
