@@ -58,3 +58,11 @@ $ airodump-ng mon0
 Pipe data to datasamalen
 $ airodump-ng --berlin 1 mon0 2>&1 | ./airodump-scrubber.pl | python datasamalen.py
 
+Running mongodb:
+
+$ mkdir data
+$ mongod --rest --dbpath data
+
+Access raw datasamalen data:
+http://localhost:28017/deathray/clients
+http://localhost:28017/deathray/client_observations

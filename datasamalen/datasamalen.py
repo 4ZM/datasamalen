@@ -23,7 +23,17 @@ import sys
 import pymongo
 from datetime import datetime
 from pymongo import MongoClient
+import re
 
+import serial
+
+# Open the serial port (angle data from arduino) if available
+try:
+    s = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+except:
+    s = None
+    print('No serial interface found - running without angle info')
+    
 # Client observation
 #   mac
 #-   connected
@@ -72,7 +82,7 @@ def parse_client(line):
     client['type'] = 'client'
     client['mac'] = mac
     client['power'] = pwr if pwr < -1 and pwr > -127 else None 
-    client['probes'] = probes.split(',')
+    client['probes'] = [s.strip() for s in probes.split(',')]
     return client
     
 def parse_ap(line):
@@ -83,7 +93,10 @@ def parse_ap(line):
     
 def add_angle_info(sample):
     """ If available, add angular data to data point """
-    sample['angle'] = None
+
+    angle_reading = s.readline() if s else None
+    
+    sample['angle'] = int(angle_reading[:-2]) if angle_reading and re.match('^-?[0-9]+\r\n', angle_reading) else None
 
 def update_db(sample):
     """ Add the sample to the db, or update the data allready there """  
@@ -109,7 +122,6 @@ def update_db(sample):
 
     # If it's a new client, insert it
     if not client:
-        print("Inserting new client")
         clients.insert({
                 'mac': sample['mac'],
                 'probes': sample['probes'],
@@ -117,12 +129,10 @@ def update_db(sample):
         
     # If it's a known client, update it
     else:
-        print("Updating old client")
         client['probes'] = list(set(client['probes']) | set(sample['probes']))
         clients.save(client)
 
-    
-mongo_client = MongoClient()
+
 mongo_client = MongoClient('localhost', 27017)
 db = mongo_client.deathray
     
