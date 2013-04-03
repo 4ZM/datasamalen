@@ -159,7 +159,7 @@ aside {
   .all_data {
     position: absolute;
     left: 1100px;
-    width: 470px;
+    width: 700px;
     margin: 0 0 20px 0;
     color: yellow;
     background-color: black;
@@ -169,7 +169,7 @@ aside {
   .data {
     @extend .all_data;
     top: 40px;
-    height: 220px;
+    height: 200px;
   }
 
   .data_2_title {
@@ -181,43 +181,52 @@ aside {
   .data_2 {
     @extend .all_data;
     top: 340px;
-    height: 400px;
+    height: 380px;
     overflow: auto;
   }
 
   .data_3 {
     @extend .all_data;
     top: 750px;
-    height: 250px;
+    height: 230px;
     overflow: auto;
     margin-bottom: 40px;
     bottom:0;
-    ul  {
-      padding: 0 0 10px;
 
+    ul  {
+      padding-bottom: 40px;
     }
+
+  }
+  .console_back {
+    @extend .all_data;
+    top: 980px;
+    height: 60px;
+    width: 700px;
+    z-index: 10;
   }
 
   .console {
     @extend .all_data;
-    top: 1000px;
+    top: 980px;
     height: 20px;
-    background-color: #03010f;
+    width: 500px;
+    z-index: 11;
 
     input[type="text"] {
-
-      width: 390px;
-      height: 24px;
+      width: 500px;
+      height: 28px;
       background-color: #000000;
       color: yellow;
+      padding-bottom: 10px;
 
+      margin-left: 40px;
     }
 
   }
 
-  h2 {
+  h4 {
     margin-left: 12px;
-    background-color: #05021b;
   }
 
    .device_info {

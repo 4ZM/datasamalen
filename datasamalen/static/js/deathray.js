@@ -11,8 +11,10 @@ $(function() {
 
 
 
-    updateContent()
+    updateContent();
+
     function updateContent() {
+
         $.ajax({
             url:"json",
             beforeSend: function ( xhr ) {
@@ -37,7 +39,9 @@ $(function() {
 
                 });
 
-                setTimeout(updateContent, 5000);
+            setTimeout (function () {
+                updateContent();
+            }, 10000);
 
         });
     }
@@ -55,9 +59,8 @@ $(function() {
                 '"power" :"'+power+'"}');
 
         $(".data_2 ul").prepend('<li id="'+local_id+'">' +
-            'Bssid: '+bssid+
-            ' Power: '+power+
-            ' Angel: '+angle+
+            '[ '+bssid+
+            ' ] '+power+
             '</li>');
         var x_y =  x_y_from_angel(angle, power);
         list_device(_id, x_y, bssid, angle, power);
@@ -67,9 +70,9 @@ $(function() {
 
     function list_device(id, x_y, bssid, angle, power) {
         $(".data ul").append('<li id="'+id+'" ' +
-            'class="device_info">Device ' +
-            'Id: '+bssid+'<br/>' +
-            'Power: '+power+'<br/>' +
+            'class="device_info">' +
+            'Bssid: '+bssid+'<br/>' +
+            'Power: '+power+' | ' +
             'Angel: ' +angle+'<br/><br/>' +
             '<button>nmap</button>' +
             '<button>disassociate</button>'+
@@ -78,6 +81,7 @@ $(function() {
 
         indicator(x_y, power, id, angle);
     }
+
 
     function list_devices(num) {
         len=localStorage.length
@@ -167,8 +171,10 @@ $(function() {
 
     server_console();
     function server_console() {
-        $('.submit').click(function(e){
-            var command = $('.command').val()
+        $(".command").keydown(function(e){
+            if(e.keyCode == 13) {
+
+                var command = $('.command').val()
             e.preventDefault();
             $.ajax({
                 url:"console/"+command
@@ -180,8 +186,10 @@ $(function() {
                 });
             $('.command').val('');
             $('.data_3').scrollTop(1000000)
+            }
         });
     }
+
 
     var degree = 0, // starting position
         $element = $('#meter'),
