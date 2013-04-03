@@ -127,7 +127,7 @@ $(function() {
                 color = "red";
         } else if (power > 60) {
             var level = "high",
-                size = 60,
+                size = 70,
                 color = "#ff6e00";
         } else if (power > 40) {
             var level = "medium",

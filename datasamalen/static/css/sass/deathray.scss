@@ -47,10 +47,10 @@ ul {
   .high {
     @extend .indicator;
     margin-left: 120px;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height:70px;
     background-color: #ff6e00;
-    border-radius: 30px;
+    border-radius: 35px;
   }
   .medium {
     @extend .indicator;
@@ -190,11 +190,11 @@ aside {
     top: 750px;
     height: 230px;
     overflow: auto;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     bottom:0;
 
     ul  {
-      padding-bottom: 40px;
+      padding-bottom: 20px;
     }
 
   }
@@ -218,7 +218,6 @@ aside {
       height: 28px;
       background-color: #000000;
       color: yellow;
-      padding-bottom: 10px;
 
       margin-left: 40px;
     }

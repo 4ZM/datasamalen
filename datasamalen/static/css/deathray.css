@@ -37,10 +37,10 @@ ul li {
     border-radius: 50px; }
   #deathray .high {
     margin-left: 120px;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     background-color: #ff6e00;
-    border-radius: 30px; }
+    border-radius: 35px; }
   #deathray .medium {
     margin-left: 200px;
     width: 40px;
@@ -144,10 +144,10 @@ aside .data_3 {
   top: 750px;
   height: 230px;
   overflow: auto;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   bottom: 0; }
   aside .data_3 ul {
-    padding-bottom: 40px; }
+    padding-bottom: 20px; }
 aside .console_back {
   top: 980px;
   height: 60px;
@@ -163,7 +163,6 @@ aside .console {
     height: 28px;
     background-color: #000000;
     color: yellow;
-    padding-bottom: 10px;
     margin-left: 40px; }
 aside h4 {
   margin-left: 12px; }

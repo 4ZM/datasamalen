@@ -40,6 +40,7 @@ Scrum board for tasks:
 http://scrumblr.ca/deathray
 
 Install:
+... install mongodb http://docs.mongodb.org/manual/installation/
 ... virtualenv
 ... git clone https://github.com/Sparvnastet/datasamalen.git
 ... pip install -r requirements
