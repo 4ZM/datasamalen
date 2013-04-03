@@ -46,3 +46,15 @@ Install:
 ... python manage.py runserver
 
 ... to make muck data : 0.0.0.0:5000/muck
+
+Running airodump et al:
+
+Start airmon:
+$ airmon-ng start wlan0
+
+Check that it's freq. hopping
+$ airodump-ng mon0
+
+Pipe data to datasamalen
+$ airodump-ng --berlin 1 mon0 2>&1 | ./airodump-scrubber.pl | python datasamalen.py
+
