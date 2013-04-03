@@ -12,3 +12,4 @@ paramiko==1.10.0
 pycrypto==2.6
 pymongo==2.5
 wsgiref==0.1.2
+pyserial==2.6
