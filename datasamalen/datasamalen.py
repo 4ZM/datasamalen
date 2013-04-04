@@ -100,14 +100,14 @@ def parse_ap(line):
     ap['type'] = 'ap'
     return ap
     
-def add_angle_info(sample):
+def add_angle_info(sport, sample):
     """ If available, add angular data to data point """
 
-    angle_reading = s.readline() if s else None
+    angle_reading = sport.readline() if sport else None
     
     sample['angle'] = int(angle_reading[:-2]) if angle_reading and re.match('^-?[0-9]+\r\n', angle_reading) else None
 
-def update_db(sample):
+def update_db(db, sample):
     """ Add the sample to the db, or update the data allready there """  
 
     if sample['type'] != 'client':
@@ -142,23 +142,24 @@ def update_db(sample):
         clients.save(client)
 
 
-s = init_serial()
-db = init_db()
-
-def run_capture(db, serial, infile = None):
+def run_capture(db, sport, infile = None):
     if not infile:
         infile = sys.stdin
 
     last_line = infile.readline()
     while last_line != '':
         sample = parse_airodump(last_line)
-        add_angle_info(sample)
+        add_angle_info(sport, sample)
 
         # do some noise reduction
 
-        update_db(sample)
+        update_db(db, sample)
     
         last_line = infile.readline()
 
     
-run_capture(db, s, sys.stdin)
+if __name__ == '__main__':
+    sport = init_serial()
+    db = init_db()
+    run_capture(db, sport, sys.stdin)
+
