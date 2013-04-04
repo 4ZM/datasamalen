@@ -91,7 +91,7 @@ def parse_client(line):
     client['type'] = 'client'
     client['mac'] = mac
     client['power'] = pwr if pwr < -1 and pwr > -127 else None 
-    client['probes'] = [s.strip() for s in probes.split(',')]
+    client['probes'] = [s.strip() for s in probes.split(',') if s != '']
     return client
     
 def parse_ap(line):
