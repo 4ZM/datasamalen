@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7
 """
 Copyright (c) 2013 Anders Sundman <anders@4zm.org>
 
@@ -28,11 +27,21 @@ import re
 import serial
 
 # Open the serial port (angle data from arduino) if available
-try:
-    s = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-except:
-    s = None
-    print('No serial interface found - running without angle info')
+def init_serial(tty = None):
+    """ Initialize the serial comunication object """
+
+    # Default
+    tty = None if not tty else '/dev/ttyUSB0'
+
+    try:
+        s = serial.Serial(tty, 9600, timeout=1)
+        return s
+    except:
+        s = None
+        print('No serial interface found - running without angle info')
+
+    return s
+
     
 # Client observation
 #   mac
@@ -132,6 +141,8 @@ def update_db(sample):
         client['probes'] = list(set(client['probes']) | set(sample['probes']))
         clients.save(client)
 
+
+s = init_serial('/dev/ttyUSB0')
 
 mongo_client = MongoClient('localhost', 27017)
 db = mongo_client.deathray
