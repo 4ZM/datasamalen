@@ -20,7 +20,7 @@ along with Datasamalen.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 
 import pymongo
-from datetime import datetime
+from datetime import datetime, timedelta
 from pymongo import MongoClient
 import re
 
@@ -157,7 +157,21 @@ def run_capture(db, sport, infile = None):
     
         last_line = infile.readline()
 
-    
+def get_last_observations(db, mac, time_sec):
+    obs = db.client_observations
+    delta = timedelta(0, time_sec, 0)
+    now = datetime.utcnow()
+    last_obs = obs.find({'mac': mac,
+                         'time': {'$gt': now - delta}})
+    return last_obs
+
+def get_angle(observations):
+    powers = observations['power']
+    angles = observations['angle']
+
+def remove_all_observations(db):
+    db.client_observations.remove({})
+
 if __name__ == '__main__':
     sport = init_serial()
     db = init_db()
