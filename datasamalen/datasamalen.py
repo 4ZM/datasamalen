@@ -144,16 +144,21 @@ def update_db(sample):
 
 s = init_serial()
 db = init_db()
-    
-last_line = sys.stdin.readline()
-while last_line != '':
-    sample = parse_airodump(last_line)
-    add_angle_info(sample)
 
-    # do some noise reduction
+def run_capture(db, serial, infile = None):
+    if not infile:
+        infile = sys.stdin
 
-    update_db(sample)
+    last_line = infile.readline()
+    while last_line != '':
+        sample = parse_airodump(last_line)
+        add_angle_info(sample)
+
+        # do some noise reduction
+
+        update_db(sample)
     
-    last_line = sys.stdin.readline()
+        last_line = infile.readline()
 
     
+run_capture(db, s, sys.stdin)
