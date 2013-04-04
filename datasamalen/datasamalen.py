@@ -27,11 +27,8 @@ import re
 import serial
 
 # Open the serial port (angle data from arduino) if available
-def init_serial(tty = None):
+def init_serial(tty = '/dev/ttyUSB0'):
     """ Initialize the serial comunication object """
-
-    # Default
-    tty = None if not tty else '/dev/ttyUSB0'
 
     try:
         s = serial.Serial(tty, 9600, timeout=1)
@@ -42,6 +39,9 @@ def init_serial(tty = None):
 
     return s
 
+def init_db(host = 'localhost', port = 27017):
+    mongo_client = MongoClient(host, port)
+    return mongo_client.deathray
     
 # Client observation
 #   mac
@@ -142,10 +142,8 @@ def update_db(sample):
         clients.save(client)
 
 
-s = init_serial('/dev/ttyUSB0')
-
-mongo_client = MongoClient('localhost', 27017)
-db = mongo_client.deathray
+s = init_serial()
+db = init_db()
     
 last_line = sys.stdin.readline()
 while last_line != '':
