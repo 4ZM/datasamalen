@@ -158,17 +158,43 @@ def run_capture(db, sport, infile = None):
     
         last_line = infile.readline()
 
-def get_last_observations(db, mac, time_sec):
+def get_last_observation(db, mac, time_sec):
+    """
+    Process all observations of client with the specified mac during the
+    last time_sec seconds to find the max power and the angle.
+    """
+
+    # First, querry db for the latest observations
     obs = db.client_observations
     delta = timedelta(0, time_sec, 0)
     now = datetime.utcnow()
-    last_obs = obs.find({'mac': mac,
-                         'time': {'$gt': now - delta}})
-    return last_obs
+    last_obs = list(obs.find({'mac': mac,
+                              'time': {'$gt': now - delta}}))
+    if len(last_obs) < 1:
+        return None, None
 
-def get_angle(observations):
-    powers = observations['power']
-    angles = observations['angle']
+    powers = [o['power'] for o in last_obs]
+    angles = [o['angle'] for o in last_obs]
+
+    #print("raw pow: " + str(powers))
+    #print("raw ang: " + str(angles))
+
+    # Filter the power vector to reduce noise
+    powers = [int(x) for x in pwr_filter(powers)]
+
+    #print("flt pow: " + str(powers))
+
+    peak_power = max(powers)
+
+    # All observations must contain angle data, or none
+    if None in angles:
+        return peak_power, None
+
+    # Find the angle with the most power
+    peak_angle = center_of_gravity(powers, angles)
+
+    return peak_power, peak_angle
+
 
 def remove_all_observations(db):
     db.client_observations.remove({})
