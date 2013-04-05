@@ -191,16 +191,28 @@ def pwr_filter(l):
     # Do the convolution
     return list(numpy.convolve(ext_list, kernel, 'valid'))
 
-def center_of_gravity(l):
-    """ Comute weighted center of gravity """
+def center_of_gravity(w, a = None):
+    """
+    Comute weighted center of gravity
+    w : weights, i.e. the power
+    a : angle data associated with the power data points
+    """
 
-    if not l or len(l) < 1:
+    if not w or len(w) < 1:
+        return None
+
+    # If no angle is specified, use w indexes as angles
+    if not a:
+        a = list(xrange(len(w)))
+    elif len(w) != len(a):
+        print("ERROR: weight and angle lists must be of equal length")
         return None
 
     # Improve numerical stability by translating the data to the center
-    mid = len(l) // 2;
+    mid = sum(a) / len(a)
 
-    cog = sum([(i - mid) * float(w) for i, w in enumerate(l)]) / sum(l) + mid
+    # Compute center of gravity
+    cog = sum([(a[i] - mid) * float(x) for i, x in enumerate(w)]) / sum(w) + mid
 
     return cog
 
