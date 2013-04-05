@@ -23,7 +23,7 @@ import pymongo
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 import re
-
+import numpy
 import serial
 
 # Open the serial port (angle data from arduino) if available
@@ -171,6 +171,37 @@ def get_angle(observations):
 
 def remove_all_observations(db):
     db.client_observations.remove({})
+
+def pwr_filter(l):
+
+    if not l or len(l) < 1:
+        return None
+
+    kernel = [2, 6, 2]
+
+    # Normalize kernel
+    ks = sum(kernel)
+    kernel = [float(v) / ks for v in kernel]
+
+    # Pad data by extrapolating last value
+    hkl = len(kernel) // 2
+    ext_list = l[:hkl] + l + l[-hkl:]
+
+    # Do the convolution
+    return list(numpy.convolve(ext_list, kernel, 'valid'))
+
+def center_of_gravity(l):
+    """ Comute weighted center of gravity """
+
+    if not l or len(l) < 1:
+        return None
+
+    # Improve numerical stability by translating the data to the center
+    mid = len(l) // 2;
+
+    cog = sum([(i - mid) * float(w) for i, w in enumerate(l)]) / sum(l) + mid
+
+    return cog
 
 if __name__ == '__main__':
     sport = init_serial()
