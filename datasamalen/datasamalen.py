@@ -113,14 +113,15 @@ def update_db(db, sample):
     if sample['type'] != 'client':
         return
     
-    # Register the observation
-    client_observations = db.client_observations
-    client_observations.insert({
-            'mac': sample['mac'],
-            'time': datetime.utcnow(),
-            'power': sample['power'],
-            'angle': sample['angle'],
-            })
+    # Register the observation (if it includes power info)
+    if sample['power']:
+        client_observations = db.client_observations
+        client_observations.insert({
+                'mac': sample['mac'],
+                'time': datetime.utcnow(),
+                'power': sample['power'],
+                'angle': sample['angle'],
+                })
 
 
     # Get the clients collection
